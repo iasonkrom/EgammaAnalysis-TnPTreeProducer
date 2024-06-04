@@ -3,17 +3,17 @@ import FWCore.ParameterSet.Config as cms
 
 
 def calibrateEGM(process, options ):
-    
+
     ### apply 80X regression
     from EgammaAnalysis.ElectronTools.regressionWeights_cfi import regressionWeights
     process = regressionWeights(process)
 
     process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
                                                        calibratedPatElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
-                                                                                           engineName = cms.untracked.string('TRandom3'),                
+                                                                                           engineName = cms.untracked.string('TRandom3'),
                                                                                            ),
                                                        calibratedPatPhotons    = cms.PSet( initialSeed = cms.untracked.uint32(81),
-                                                                                           engineName = cms.untracked.string('TRandom3'),                
+                                                                                           engineName = cms.untracked.string('TRandom3'),
                                                                                            ),
                                                        )
 
@@ -31,7 +31,7 @@ def calibrateEGM(process, options ):
         process.calibratedPatPhotons.isMC   = cms.bool(False)
 
 
-    
+
     process.selectElectronsBase = cms.EDFilter("PATElectronSelector",
                                                src = cms.InputTag('calibratedPatElectrons'),
                                                cut = cms.string(  options['ELECTRON_CUTS']),
@@ -51,14 +51,14 @@ def calibrateEGM(process, options ):
 
 ###################################################################################
 ################  --- GOOD particles MiniAOD
-################################################################################### 
+###################################################################################
 def setGoodParticlesMiniAOD(process, options):
 
     if options['UseCalibEn']:  calibrateEGM( process, options )
 
 
     ########################### Extra variables for SUSY IDs ############
-    if options['addSUSY']: 
+    if options['addSUSY']:
         import EgammaAnalysis.TnPTreeProducer.electronsExtrasSUSY_cff  as eleSusyID
         eleSusyID.addSusyIDs( process, options )
         options['ELECTRON_COLL']        = "slimmedElectronsWithUserData"
@@ -70,8 +70,8 @@ def setGoodParticlesMiniAOD(process, options):
                                           beamSpot         = cms.InputTag("offlineBeamSpot"),
                                           conversions      = cms.InputTag("reducedEgamma:reducedConversions"),
                                           pfCandidates     = cms.InputTag("packedPFCandidates"),
-                                          ebRecHits        = cms.InputTag("reducedEgamma","reducedEBRecHits","PAT"),
-                                          eeRecHits        = cms.InputTag("reducedEgamma","reducedEERecHits","PAT")
+                                          ebRecHits        = cms.InputTag("reducedEgamma","reducedEBRecHits","RECO"),
+                                          eeRecHits        = cms.InputTag("reducedEgamma","reducedEERecHits","RECO")
                                           )
 
     ####################  Electron collection
@@ -79,20 +79,20 @@ def setGoodParticlesMiniAOD(process, options):
                                          src = cms.InputTag( options['ELECTRON_COLL'] ),
                                          cut = cms.string(   options['ELECTRON_CUTS'] ),
                                          )
-    
+
     ####################  Photon collection
     process.goodPhotons   =  cms.EDFilter("PATPhotonRefSelector",
                                             src = cms.InputTag( options['PHOTON_COLL'] ),
                                             cut = cms.string(   options['PHOTON_CUTS'] )
                                             )
 
-    
-    #################### SUPERCLUSTER collections                                                                 
+
+    #################### SUPERCLUSTER collections
     process.superClusterCands = cms.EDProducer("ConcreteEcalCandidateProducer",
                                                src = cms.InputTag(options['SUPERCLUSTER_COLL']),
                                                particleType = cms.int32(11),
                                                )
-    
+
     process.goodSuperClusters = cms.EDFilter("RecoEcalCandidateRefSelector",
                                              src = cms.InputTag("superClusterCands"),
                                              cut = cms.string(options['SUPERCLUSTER_CUTS']),
@@ -102,12 +102,12 @@ def setGoodParticlesMiniAOD(process, options):
 
     process.sc_sequenceMiniAOD = cms.Sequence(
         process.superClusterCands +
-        process.goodSuperClusters 
+        process.goodSuperClusters
         )
 
 ###################################################################################
 ################  --- GOOD particles AOD
-################################################################################### 
+###################################################################################
 def setGoodParticlesAOD(process, options):
 
 
@@ -138,7 +138,7 @@ def setGoodParticlesAOD(process, options):
                                             mapInputTags = cms.VInputTag("hltEgammaClusterShape:sigmaIEtaIEta5x5",
                                                                         "hltEgammaEcalPFClusterIso",
                                                                         "hltEgammaHcalPFClusterIso",
-                                                                        "hltEgammaHoverE", 
+                                                                        "hltEgammaHoverE",
                                                                         "hltEgammaEleGsfTrackIso",
                                                                         "hltEgammaGsfTrackVars:Deta",
                                                                         "hltEgammaGsfTrackVars:DetaSeed",
@@ -150,7 +150,7 @@ def setGoodParticlesAOD(process, options):
 
 
 
-   
+
 
     ####################  Electron collection
     process.goodElectrons = cms.EDFilter("GsfElectronRefSelector",
@@ -164,21 +164,21 @@ def setGoodParticlesAOD(process, options):
                                             src = cms.InputTag( options['PHOTON_COLL'] ),
                                             cut = cms.string(   options['PHOTON_CUTS'] )
                                             )
-    
-    #################### SUPERCLUSTER collections                                                                 
+
+    #################### SUPERCLUSTER collections
     process.superClusterMerger =  cms.EDProducer("EgammaSuperClusterMerger",
                                                  src = cms.VInputTag(cms.InputTag("particleFlowSuperClusterECAL:particleFlowSuperClusterECALBarrel"),
                                                                      cms.InputTag("particleFlowSuperClusterECAL:particleFlowSuperClusterECALEndcapWithPreshower"),
 #                                                                     cms.InputTag("particleFlowEGamma"),
                                                                      ),
                                                  )
-    
-    
+
+
     process.superClusterCands = cms.EDProducer("ConcreteEcalCandidateProducer",
                                                src = cms.InputTag("superClusterMerger"),
                                                particleType = cms.int32(11),
                                                )
-    
+
     process.goodSuperClusters = cms.EDFilter("RecoEcalCandidateRefSelector",
                                              src = cms.InputTag("superClusterCands"),
                                              cut = cms.string(options['SUPERCLUSTER_CUTS']),
@@ -202,5 +202,5 @@ def setGoodParticlesAOD(process, options):
         process.superClusterMerger      +
         process.superClusterCands       +
         process.recoEcalCandidateHelper +
-        process.goodSuperClusters     
+        process.goodSuperClusters
         )
