@@ -4,7 +4,7 @@ import os
 #
 # Example script to submit TnPTreeProducer to crab
 #
-submitVersion = "2024-07-02" # add some date here
+submitVersion = "2024-07-29" # add some date here
 doL1matching  = False
 isAOD = False
 
@@ -53,7 +53,7 @@ def getLumiMask(era):
   elif era=='UL2018': return 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions18/13TeV/PromptReco/Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt'
   elif era=='2022': return 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions22/Cert_Collisions2022_355100_362760_Golden.json'
   elif era=='2023': return 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions23/Cert_Collisions2023_366442_370790_Golden.json'
-  elif era=='2024': return 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions24/DCSOnly_JSONS/dailyDCSOnlyJSON/Collisions24_13p6TeV_378981_382595_DCSOnly_TkPx.json'
+  elif era=='2024': return 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions24/DCSOnly_JSONS/dailyDCSOnlyJSON/Collisions24_13p6TeV_378981_383467_DCSOnly_TkPx.json'
 
 
 #
@@ -113,18 +113,10 @@ def submitWrapper(requestName, sample, era, extraParam=[]):
 
 eraData       = '2024'
 
-submitWrapper('Run2024E_0v1', '/EGamma0/Run2024E-PromptReco-v1/MINIAOD', eraData)
-submitWrapper('Run2024E_1v1', '/EGamma1/Run2024E-PromptReco-v1/MINIAOD', eraData)
-submitWrapper('Run2024E_0v2', '/EGamma0/Run2024E-PromptReco-v2/MINIAOD', eraData)
-submitWrapper('Run2024E_1v2', '/EGamma1/Run2024E-PromptReco-v2/MINIAOD', eraData)
 submitWrapper('Run2024F_0v1', '/EGamma0/Run2024F-PromptReco-v1/MINIAOD', eraData)
 submitWrapper('Run2024F_1v1', '/EGamma1/Run2024F-PromptReco-v1/MINIAOD', eraData)
 
 if isAOD:  #AOD files
 
-    submitWrapper('Run2024E_0v1_AOD', '/EGamma0/Run2024E-PromptReco-v1/AOD', eraData)
-    submitWrapper('Run2024E_1v1_AOD', '/EGamma1/Run2024E-PromptReco-v1/AOD', eraData)
-    submitWrapper('Run2024E_0v2_AOD', '/EGamma0/Run2024E-PromptReco-v2/AOD', eraData)
-    submitWrapper('Run2024E_1v2_AOD', '/EGamma1/Run2024E-PromptReco-v2/AOD', eraData)
     submitWrapper('Run2024F_0v1_AOD', '/EGamma0/Run2024F-PromptReco-v1/AOD', eraData)
     submitWrapper('Run2024F_1v1_AOD', '/EGamma1/Run2024F-PromptReco-v1/AOD', eraData)
