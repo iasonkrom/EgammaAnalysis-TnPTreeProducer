@@ -4,13 +4,13 @@ import os
 #
 # Example script to submit TnPTreeProducer to crab
 #
-submitVersion = "2024-06-04" # add some date here
+submitVersion = "2024-07-02" # add some date here
 doL1matching  = False
 isAOD = False
 
 defaultArgs   = ['doEleID=True','doPhoID=True','doTrigger=True']
 AODArgs     = ['isAOD=True','doRECO=True']
-mainOutputDir = '/store/user/i/ikrommyd/tnpTuples/Prompt2024/%s' % (submitVersion)
+mainOutputDir = '/store/group/phys_egamma/tnpTuples/%s/%s' % (os.environ['USER'], submitVersion)
 
 # Logging the current version of TnpTreeProducer here, such that you can find back what the actual code looked like when you were submitting
 # os.system('mkdir -p /eos/cms/%s' % mainOutputDir)
@@ -53,7 +53,7 @@ def getLumiMask(era):
   elif era=='UL2018': return 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions18/13TeV/PromptReco/Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.txt'
   elif era=='2022': return 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions22/Cert_Collisions2022_355100_362760_Golden.json'
   elif era=='2023': return 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions23/Cert_Collisions2023_366442_370790_Golden.json'
-  elif era=='2024': return 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions24/DCSOnly_JSONS/dailyDCSOnlyJSON/Collisions24_13p6TeV_378981_381484_DCSOnly_TkPx.json'
+  elif era=='2024': return 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions24/DCSOnly_JSONS/dailyDCSOnlyJSON/Collisions24_13p6TeV_378981_382595_DCSOnly_TkPx.json'
 
 
 #
@@ -112,27 +112,19 @@ def submitWrapper(requestName, sample, era, extraParam=[]):
 #if isReleaseAbove(13,0):
 
 eraData       = '2024'
-eraMCMLL50  = '2024MLL50'
-eraMCM50 = '2024M50'
 
-submitWrapper('Run2024C_0v1', '/EGamma0/Run2024C-PromptReco-v1/MINIAOD', eraData)
-submitWrapper('Run2024C_1v1', '/EGamma1/Run2024C-PromptReco-v1/MINIAOD', eraData)
-submitWrapper('Run2024D_0v1', '/EGamma0/Run2024D-PromptReco-v1/MINIAOD', eraData)
-submitWrapper('Run2024D_1v1', '/EGamma1/Run2024D-PromptReco-v1/MINIAOD', eraData)
 submitWrapper('Run2024E_0v1', '/EGamma0/Run2024E-PromptReco-v1/MINIAOD', eraData)
 submitWrapper('Run2024E_1v1', '/EGamma1/Run2024E-PromptReco-v1/MINIAOD', eraData)
-
-submitWrapper('DY_LO_MLL50_2024', '/DYTo2L_MLL-50_TuneCP5_13p6TeV_pythia8/Run3Winter24MiniAOD-KeepSi_133X_mcRun3_2024_realistic_v8-v2/MINIAODSIM', eraMCMLL50)
-submitWrapper('DY_LO_M50_2024', '/DYto2L_M-50_TuneCP5_13p6TeV_pythia8/Run3Winter24MiniAOD-KeepSi_133X_mcRun3_2024_realistic_v8-v2/MINIAODSIM', eraMCM50)
+submitWrapper('Run2024E_0v2', '/EGamma0/Run2024E-PromptReco-v2/MINIAOD', eraData)
+submitWrapper('Run2024E_1v2', '/EGamma1/Run2024E-PromptReco-v2/MINIAOD', eraData)
+submitWrapper('Run2024F_0v1', '/EGamma0/Run2024F-PromptReco-v1/MINIAOD', eraData)
+submitWrapper('Run2024F_1v1', '/EGamma1/Run2024F-PromptReco-v1/MINIAOD', eraData)
 
 if isAOD:  #AOD files
 
-    submitWrapper('Run2024C_0v1_AOD', '/EGamma0/Run2024C-PromptReco-v1/AOD', eraData)
-    submitWrapper('Run2024C_1v1_AOD', '/EGamma1/Run2024C-PromptReco-v1/AOD', eraData)
-    submitWrapper('Run2024D_0v1_AOD', '/EGamma0/Run2024D-PromptReco-v1/AOD', eraData)
-    submitWrapper('Run2024D_1v1_AOD', '/EGamma1/Run2024D-PromptReco-v1/AOD', eraData)
     submitWrapper('Run2024E_0v1_AOD', '/EGamma0/Run2024E-PromptReco-v1/AOD', eraData)
     submitWrapper('Run2024E_1v1_AOD', '/EGamma1/Run2024E-PromptReco-v1/AOD', eraData)
-
-    submitWrapper('DY_LO_MLL50_2024_AOD', '/DYTo2L_MLL-50_TuneCP5_13p6TeV_pythia8/Run3Winter24MiniAOD-KeepSi_133X_mcRun3_2024_realistic_v8-v2/AODSIM', eraMCMLL50)
-    submitWrapper('DY_LO_M50_2024_AOD', '/DYto2L_M-50_TuneCP5_13p6TeV_pythia8/Run3Winter24MiniAOD-KeepSi_133X_mcRun3_2024_realistic_v8-v2/AODSIM', eraMCM50)
+    submitWrapper('Run2024E_0v2_AOD', '/EGamma0/Run2024E-PromptReco-v2/AOD', eraData)
+    submitWrapper('Run2024E_1v2_AOD', '/EGamma1/Run2024E-PromptReco-v2/AOD', eraData)
+    submitWrapper('Run2024F_0v1_AOD', '/EGamma0/Run2024F-PromptReco-v1/AOD', eraData)
+    submitWrapper('Run2024F_1v1_AOD', '/EGamma1/Run2024F-PromptReco-v1/AOD', eraData)

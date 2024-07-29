@@ -2,7 +2,7 @@
 import os, glob, ROOT, subprocess
 
 submitVersion = "2022-03-27"
-mainOutputDir = '/eos/cms/store/group/phys_egamma/ec/tnpTuples/%s/%s' % (os.environ['USER'], submitVersion) #note that the access to this repository is restricted. You might want to create your own
+mainOutputDir = '/eos/cms/store/group/phys_egamma/tnpTuples/%s/%s' % (os.environ['USER'], submitVersion) #note that the access to this repository is restricted. You might want to create your own
 
 print("submitVersion: %s"%submitVersion)
 print("mainOutputDir: %s"%mainOutputDir)
